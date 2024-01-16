@@ -23,6 +23,12 @@
       ],
       "@common/*": [
         "src/@common/*"
+      ],
+      "@ejara/xyz": [
+        "libs/xyz/src"
+      ],
+      "@ejara/xyz/*": [
+        "libs/xyz/src/*"
       ]
     }
   }
