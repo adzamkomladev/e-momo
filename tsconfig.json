@@ -29,6 +29,12 @@
       ],
       "@ejara/xyz/*": [
         "libs/xyz/src/*"
+      ],
+      "@ejara/utils": [
+        "libs/utils/src"
+      ],
+      "@ejara/utils/*": [
+        "libs/utils/src/*"
       ]
     }
   }

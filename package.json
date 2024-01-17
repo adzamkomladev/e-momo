@@ -25,6 +25,8 @@
     "@nestjs/core": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
     "@prisma/client": "^5.8.1",
+    "google-libphonenumber": "^3.2.34",
+    "nanoid": "^5.0.4",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1"
   },
@@ -74,7 +76,8 @@
     ],
     "moduleNameMapper": {
       "^ejara/xyz(|/.*)$": "<rootDir>/libs/xyz/src/$1",
-      "^@ejara/xyz(|/.*)$": "<rootDir>/libs/xyz/src/$1"
+      "^@ejara/xyz(|/.*)$": "<rootDir>/libs/xyz/src/$1",
+      "^@ejara/utils(|/.*)$": "<rootDir>/libs/utils/src/$1"
     }
   }
 }

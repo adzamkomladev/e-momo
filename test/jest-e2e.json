@@ -12,6 +12,8 @@
   },
   "moduleNameMapper": {
     "@ejara/xyz/(.*)": "<rootDir>/../libs/xyz/src/$1",
-    "@ejara/xyz": "<rootDir>/../libs/xyz/src"
+    "@ejara/xyz": "<rootDir>/../libs/xyz/src",
+    "@ejara/utils/(.*)": "<rootDir>/../libs/utils/src/$1",
+    "@ejara/utils": "<rootDir>/../libs/utils/src"
   }
 }
