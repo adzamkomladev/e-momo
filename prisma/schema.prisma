@@ -9,3 +9,64 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id       String    @id @default(uuid()) @db.Uuid
+  email    String    @unique @db.VarChar(100)
+  keys     ApiKey[]
+  payments Payment[]
+}
+
+model ApiKey {
+  id        String            @id @default(uuid()) @db.Uuid
+  user      User              @relation(fields: [userId], references: [id])
+  userId    String            @db.Uuid
+  key       String            @unique @db.VarChar(32)
+  env       ApiKeyEnvironment
+  expired   Boolean           @default(false)
+  createdAt DateTime          @default(now())
+}
+
+model Payment {
+  id     String @id @default(uuid()) @db.Uuid
+  userId String @db.Uuid
+  user   User   @relation(fields: [userId], references: [id])
+
+  apiKeyId String? @db.Uuid
+
+  status      PaymentStatus   @default(pending)
+  ref         String          @unique @db.VarChar(16)
+  externalRef String
+  amount      Int
+  method      PaymentMethod
+  operator    PaymentOperator
+  account     String          @db.VarChar(30)
+  reversed    DateTime?
+
+  request  Json? @db.Json
+  response Json? @db.Json
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum ApiKeyEnvironment {
+  DEV
+  PROD
+}
+
+enum PaymentStatus {
+  pending
+  failed
+  success
+}
+
+enum PaymentMethod {
+  momo
+}
+
+enum PaymentOperator {
+  mtn
+  airteltigo
+  vodafone
+}

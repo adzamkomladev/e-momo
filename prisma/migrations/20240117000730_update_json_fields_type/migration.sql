@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Payment" ALTER COLUMN "request" SET DATA TYPE JSON,
+ALTER COLUMN "response" SET DATA TYPE JSON;
