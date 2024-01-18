@@ -140,7 +140,7 @@ export class PaymentsService {
         return await this.prisma.payment.update({
             where: {
                 externalRef,
-                status: $Enums.PaymentStatus.success,
+                status: $Enums.PaymentStatus.pending,
                 ref,
                 amount
             },

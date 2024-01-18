@@ -1,5 +1,7 @@
-import { Body, Controller, Logger, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, Logger, Post } from '@nestjs/common';
 import { ApiOkResponse } from '@nestjs/swagger';
+
+import { XyzDto } from './dto/xyz.dto';
 
 import { WebhooksService } from './webhooks.service';
 
@@ -10,9 +12,10 @@ export class WebhooksController {
   constructor(private readonly webhooksService: WebhooksService) { }
 
   @Post('xyz')
+  @HttpCode(200)
   @ApiOkResponse()
   async handleXyz(
-    @Body() body: any,
+    @Body() body: XyzDto,
   ) {
     this.logger.log('THIS IS THE DATA RECEIVED FOR HANDLE XYZ WEBHOOK', body);
 

@@ -4,13 +4,14 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { XYZ_WEBHOOK_RECEIVED } from '../@common/constants/events.constant';
 
 import { XyzWebhookReceivedEvent } from './events/xyz.webhook.received.event';
+import { XyzDto } from './dto/xyz.dto';
 
 @Injectable()
 export class WebhooksService {
 
     constructor(private readonly event: EventEmitter2) { }
 
-    handlePaymentCompleted(payload: any) {
+    handlePaymentCompleted(payload: XyzDto) {
         //TODO: Log webhook into a store (for your own good)
 
         const event = new XyzWebhookReceivedEvent();

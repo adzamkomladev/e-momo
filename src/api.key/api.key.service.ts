@@ -14,9 +14,10 @@ export class ApiKeyService {
     ) { }
 
     async get(key: string, checkCache: boolean = true): Promise<ApiKey | null> {
+        if (!key) { return null }
+
         if (checkCache) {
             const apiKey = await this.cache.get<ApiKey>(`apiKeyUsers:${key}`);
-
             if (apiKey) {
                 return apiKey;
             }
@@ -30,6 +31,8 @@ export class ApiKeyService {
                 user: true
             }
         });
+
+        console.log(apiKey)
 
         if (apiKey) {
             await this.cache.set(`apiKeyUsers:${key}`, apiKey, 3600000);

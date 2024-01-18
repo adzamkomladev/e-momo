@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, HttpException, Param, Post, Query } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, HttpException, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiNotFoundResponse, ApiOkResponse } from '@nestjs/swagger';
 
 import { ApiKey as ApiKeyEntity } from '../api.key/types/api.key.type';
@@ -10,6 +10,10 @@ import { InitiateDto } from './dto/initiate.dto';
 
 import { PaymentsService } from './payments.service';
 
+import { ApiKeyGuard } from '@common/guards/api.key.guard';
+import { ApiKeyThrottleGuard } from '@common/guards/api.key.throttle.guard';
+
+@UseGuards(ApiKeyThrottleGuard, ApiKeyGuard)
 @Controller('payments')
 export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) { }

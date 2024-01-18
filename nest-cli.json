@@ -6,6 +6,15 @@
     "deleteOutDir": true,
     "webpack": true
   },
+  "plugins": [
+    {
+      "name": "@nestjs/swagger",
+      "options": {
+        "classValidatorShim": false,
+        "introspectComments": true
+      }
+    }
+  ],
   "projects": {
     "xyz": {
       "type": "library",
