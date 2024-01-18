@@ -14,6 +14,7 @@ import { InitiateDto } from './dto/initiate.dto';
 import { UpdateDto } from './dto/update.dto';
 
 import { PrismaService } from '@common/services/prisma.service';
+import { PaginatedPayments } from './dto/paginated.payments.dto';
 
 
 @Injectable()
@@ -68,21 +69,32 @@ export class PaymentsService {
         return payment;
     }
 
-    async getAll(params: {
-        skip?: number;
-        take?: number;
-        cursor?: Prisma.PaymentWhereUniqueInput;
-        where?: Prisma.PaymentWhereInput;
-        orderBy?: Prisma.PaymentOrderByWithRelationInput;
-    }): Promise<Payment[]> {
-        const { skip, take, cursor, where, orderBy } = params;
-        return this.prisma.payment.findMany({
-            skip,
-            take,
-            cursor,
-            where,
-            orderBy,
-        });
+    async getAllPaginated(
+        apiKey: ApiKey,
+        page: number = 1,
+        size: number = 10
+    ): Promise<PaginatedPayments> {
+        const [total, data] = await Promise.all([
+            this.prisma.payment.count({
+                where: {
+                    userId: apiKey.userId
+                }
+            }),
+            , this.prisma.payment.findMany({
+                skip: (page - 1) * size,
+                take: size,
+                where: {
+                    userId: apiKey.userId
+                }
+            })
+        ]);
+
+        return {
+            page,
+            size,
+            total,
+            data
+        }
     }
 
     async updatePayment({ id, externalRef, request, response, status }: UpdateDto) {

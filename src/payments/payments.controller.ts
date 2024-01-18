@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, HttpException, Param, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, HttpException, Param, Post, Query } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiNotFoundResponse, ApiOkResponse } from '@nestjs/swagger';
 
 import { ApiKey as ApiKeyEntity } from '../api.key/types/api.key.type';
@@ -70,21 +70,14 @@ export class PaymentsController {
   @Get('history')
   @ApiOkResponse()
   @ApiBadRequestResponse()
-  @ApiNotFoundResponse()
-  @ResponseMessage('payments retrieved')
+  @ResponseMessage('payment history retrieved')
   async history(
     @ApiKey() apiKey: ApiKeyEntity,
-    @Param('ref') ref: string
+    @Query('page') page: number = 1,
+    @Query('size') size: number = 10
   ) {
     try {
-      const payment = await this.paymentsService.get(ref, apiKey);
-
-      return {
-        status: payment.status,
-        amount: payment.amount,
-        reference: payment.ref,
-        externalReference: payment.externalRef
-      }
+      return await this.paymentsService.getAllPaginated(apiKey, page, size);
     } catch (e) {
       if (e instanceof HttpException) {
         throw e;
