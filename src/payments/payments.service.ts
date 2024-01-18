@@ -12,9 +12,9 @@ import { ApiKey } from '../api.key/types/api.key.type';
 
 import { InitiateDto } from './dto/initiate.dto';
 import { UpdateDto } from './dto/update.dto';
+import { PaginatedPayments } from './dto/paginated.payments.dto';
 
 import { PrismaService } from '@common/services/prisma.service';
-import { PaginatedPayments } from './dto/paginated.payments.dto';
 
 
 @Injectable()
@@ -107,6 +107,20 @@ export class PaymentsService {
                 status: status as $Enums.PaymentStatus,
                 request,
                 response
+            }
+        })
+    }
+
+    async completePayment({ ref, externalRef, amount, status }: Partial<UpdateDto>) {
+        return await this.prisma.payment.update({
+            where: {
+                externalRef,
+                status: $Enums.PaymentStatus.success,
+                ref,
+                amount
+            },
+            data: {
+                status: status as $Enums.PaymentStatus,
             }
         })
     }

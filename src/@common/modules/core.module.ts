@@ -4,6 +4,7 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { BullModule } from '@nestjs/bull';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 import type { RedisClientOptions } from 'redis';
 import * as redisStore from 'cache-manager-redis-store';
@@ -44,6 +45,7 @@ import { TransformInterceptor } from '@common/interceptors/transform.interceptor
             route: '/queues',
             adapter: ExpressAdapter
         }),
+        EventEmitterModule.forRoot(),
         ThrottlerModule.forRootAsync({
             inject: [ConfigService],
             useFactory: (config: ConfigService) => [

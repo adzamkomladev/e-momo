@@ -1,0 +1,1 @@
+export const XYZ_WEBHOOK_RECEIVED = 'xyz.webhook.received';
