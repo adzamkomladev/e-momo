@@ -1,11 +1,14 @@
 import { BadRequestException, Body, Controller, Get, HttpException, Param, Post } from '@nestjs/common';
+import { ApiBadRequestResponse, ApiNotFoundResponse, ApiOkResponse } from '@nestjs/swagger';
+
+import { ApiKey as ApiKeyEntity } from '../api.key/types/api.key.type';
+
+import { ApiKey } from '@common/decorators/api.key.decorator';
+import { ResponseMessage } from '@common/decorators/response.message.decorator';
+
+import { InitiateDto } from './dto/initiate.dto';
 
 import { PaymentsService } from './payments.service';
-import { ApiBadRequestResponse, ApiNotFoundResponse, ApiOkResponse } from '@nestjs/swagger';
-import { ResponseMessage } from '../@common/decorators/response.message.decorator';
-import { InitiateDto } from './dto/initiate.dto';
-import { ApiKey } from '../@common/decorators/api.key.decorator';
-import { ApiKey as ApiKeyEntity } from '../api.key/types/api.key.type';
 
 @Controller('payments')
 export class PaymentsController {
