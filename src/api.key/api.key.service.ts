@@ -22,7 +22,7 @@ export class ApiKeyService {
             }
         }
 
-        const apiKey = await this.prisma.apiKey.findUnique({
+        const apiKey = await this.prisma.apiKey.findFirst({
             where: {
                 key
             },

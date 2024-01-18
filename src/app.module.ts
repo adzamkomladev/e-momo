@@ -12,7 +12,7 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(ApiKeyMiddleware)
-      .exclude('health')
+      .exclude('health', 'swagger')
       .forRoutes('*');
   }
 }
