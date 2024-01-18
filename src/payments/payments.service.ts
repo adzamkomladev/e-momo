@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bull';
 
 import { PhoneService, TokenService } from '@ejara/utils';
@@ -44,19 +44,28 @@ export class PaymentsService {
             }
         });
 
-        if (payment) {
-            await this.paymentInitiatedQueue.add(payment);
+        if (!payment) {
+            throw new BadRequestException('Failed to initiate payment!');
         }
+
+        await this.paymentInitiatedQueue.add(payment);
 
         return payment;
     }
 
-    async get(ref: string) {
-        return await this.prisma.payment.findFirst({
+    async get(ref: string, apiKey: ApiKey) {
+        const payment = await this.prisma.payment.findFirst({
             where: {
-                ref
+                ref,
+                userId: apiKey.userId
             }
         });
+
+        if (!payment) {
+            throw new NotFoundException(`Payment with ref: ${ref} not found!`);
+        }
+
+        return payment;
     }
 
     async getAll(params: {
