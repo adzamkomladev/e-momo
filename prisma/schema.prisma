@@ -36,7 +36,7 @@ model Payment {
 
   status      PaymentStatus   @default(pending)
   ref         String          @unique @db.VarChar(16)
-  externalRef String
+  externalRef String?
   amount      Int
   method      PaymentMethod
   operator    PaymentOperator

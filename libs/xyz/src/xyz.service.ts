@@ -3,18 +3,21 @@ import { Injectable } from '@nestjs/common';
 import { Status } from './enums/status.enum';
 
 import { Response } from './dto/response.dto';
+import { TokenService } from '../../utils/src';
 
 @Injectable()
 export class XyzService {
 
-    async makePayment(): Promise<Response> {
+    constructor(private readonly tokenService: TokenService) { }
+
+    async makePayment(data: any): Promise<Response> {
         return {
             statusCode: 200,
             data: {
                 status: Status.PENDING,
-                amount: 1000,
-                reference: "xxxxxx",
-                externalReference: "xxxxxxx"
+                amount: data.amount,
+                reference: data.ref,
+                externalReference: this.tokenService.generatePaymentRef(16, 'XYZ')
             }
         }
     }

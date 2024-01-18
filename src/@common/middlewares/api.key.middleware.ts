@@ -15,7 +15,7 @@ export class ApiKeyMiddleware implements NestMiddleware {
       const apiKey = await this.apiKeyService.get(key);
 
       if (apiKey) {
-        req.user = apiKey.user;
+        req.apiKey = apiKey;
       }
     } catch (error) {
       this.logger.error(error);

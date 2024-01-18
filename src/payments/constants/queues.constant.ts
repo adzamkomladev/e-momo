@@ -1,0 +1,1 @@
+export const PAYMENT_INITIATED_QUEUE = 'payment.initiated';

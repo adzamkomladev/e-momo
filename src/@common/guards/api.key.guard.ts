@@ -6,6 +6,6 @@ export class ApiKeyGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean {
     const request = context.switchToHttp().getRequest();
-    return !!request.user;
+    return !!request.apiKey;
   }
 }
