@@ -35,6 +35,7 @@ model Payment {
   apiKeyId String? @db.Uuid
 
   status      PaymentStatus   @default(pending)
+  userRef String
   ref         String          @unique @db.VarChar(16)
   externalRef String?
   amount      Int
@@ -48,6 +49,8 @@ model Payment {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([userRef])
 }
 
 enum ApiKeyEnvironment {

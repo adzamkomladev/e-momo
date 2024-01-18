@@ -1,4 +1,4 @@
-import { IsInt, IsNotEmpty, IsNumber, IsPhoneNumber, IsString } from "class-validator";
+import { IsIn, IsInt, IsNotEmpty, IsNumber, IsPhoneNumber, IsString } from "class-validator";
 
 export class InitiateDto {
     @IsNotEmpty()
@@ -8,6 +8,7 @@ export class InitiateDto {
 
     @IsNotEmpty()
     @IsString()
+    @IsIn(['momo'])
     readonly method: string;
 
     @IsNotEmpty()
@@ -17,5 +18,10 @@ export class InitiateDto {
 
     @IsNotEmpty()
     @IsString()
+    @IsIn(['mtn', 'vodafone', 'airteltigo'])
     readonly operator: string;
+
+    @IsNotEmpty()
+    @IsString()
+    readonly reference: string;
 }

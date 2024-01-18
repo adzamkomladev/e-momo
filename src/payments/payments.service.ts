@@ -29,9 +29,20 @@ export class PaymentsService {
     ) { }
 
     async initiatePayment(payload: InitiateDto, apiKey: ApiKey) {
-        const { account, amount, method, operator } = payload;
+        const { account, amount, method, operator, reference } = payload;
 
-        const payment = await this.prisma.payment.create({
+        const payment = await this.prisma.payment.findFirst({
+            where: {
+                userRef: reference,
+                userId: apiKey.userId
+            }
+        });
+
+        if (payment) {
+            throw new BadRequestException('Reference: ${reference} already exists. references must be unique!');
+        }
+
+        const createdPayment = await this.prisma.payment.create({
             data: {
                 account: this.phoneService.format(account, 'GH'),
                 amount,
@@ -41,23 +52,24 @@ export class PaymentsService {
                 user: {
                     connect: { id: apiKey.userId }
                 },
-                ref: this.tokenService.generatePaymentRef(16)
+                ref: this.tokenService.generatePaymentRef(16),
+                userRef: reference
             }
         });
 
-        if (!payment) {
+        if (!createdPayment) {
             throw new BadRequestException('Failed to initiate payment!');
         }
 
-        await this.paymentInitiatedQueue.add(payment);
+        await this.paymentInitiatedQueue.add(createdPayment);
 
-        return payment;
+        return createdPayment;
     }
 
     async get(ref: string, apiKey: ApiKey) {
         const payment = await this.prisma.payment.findFirst({
             where: {
-                ref,
+                userRef: ref,
                 userId: apiKey.userId
             }
         });
@@ -85,6 +97,14 @@ export class PaymentsService {
                 take: size,
                 where: {
                     userId: apiKey.userId
+                },
+                select: {
+                    userId: true,
+                    id: true,
+                    amount: true,
+                    userRef: true,
+                    ref: true,
+                    status: true
                 }
             })
         ]);
@@ -93,7 +113,12 @@ export class PaymentsService {
             page,
             size,
             total,
-            data
+            data: data.map(d => ({
+                amount: d.amount,
+                status: d.status,
+                reference: d.userRef,
+                externalReference: d.ref
+            }))
         }
     }
 

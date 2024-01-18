@@ -28,8 +28,8 @@ export class PaymentsController {
       return {
         status: payment.status,
         amount: payment.amount,
-        reference: payment.ref,
-        externalReference: payment.externalRef
+        reference: payment.userRef,
+        externalReference: payment.ref
       }
     } catch (e) {
       if (e instanceof HttpException) {
@@ -55,8 +55,8 @@ export class PaymentsController {
       return {
         status: payment.status,
         amount: payment.amount,
-        reference: payment.ref,
-        externalReference: payment.externalRef
+        reference: payment.userRef,
+        externalReference: payment.ref
       }
     } catch (e) {
       if (e instanceof HttpException) {
