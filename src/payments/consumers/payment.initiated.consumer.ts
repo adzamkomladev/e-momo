@@ -47,7 +47,7 @@ export class PaymentInitiatedConsumer {
         if (res?.statusCode === HttpStatus.OK) {
             await this.paymentsService.updatePayment({
                 id: payment.id,
-                externalRef: res.data.reference,
+                externalRef: res.data.externalReference,
                 request: {
                     ref: payment.ref,
                     amount: payment.amount

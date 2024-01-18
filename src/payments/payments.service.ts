@@ -39,7 +39,7 @@ export class PaymentsService {
         });
 
         if (payment) {
-            throw new BadRequestException('Reference: ${reference} already exists. references must be unique!');
+            throw new BadRequestException(`Reference: ${reference} already exists. references must be unique!`);
         }
 
         const createdPayment = await this.prisma.payment.create({
@@ -92,7 +92,7 @@ export class PaymentsService {
                     userId: apiKey.userId
                 }
             }),
-            , this.prisma.payment.findMany({
+            this.prisma.payment.findMany({
                 skip: (page - 1) * size,
                 take: size,
                 where: {
@@ -108,12 +108,13 @@ export class PaymentsService {
                 }
             })
         ]);
+        console.log(data)
 
         return {
             page,
             size,
             total,
-            data: data.map(d => ({
+            data: (data || [])?.map(d => ({
                 amount: d.amount,
                 status: d.status,
                 reference: d.userRef,
